@@ -1,8 +1,20 @@
-SELECT ROUND(AVG(DATE(O.CHANGED) - DATE(T.ACTUAL_DELIVERY)), 0) AS DAYS_TO_BILL
-FROM TLORDER T, ODRSTAT O
-WHERE O.ORDER_ID = T.DETAIL_LiNE_ID
-AND T.CURRENT_STATUS = 'BILLD'
-AND O.STATUS_CODE = 'BILLD'
-AND T.ACTUAL_DELIVERY >= CURRENT TIMESTAMP - 21 DAYS
-AND T.ACTUAL_DELIVERY <= CURRENT TIMESTAMP
-AND T.EXTRA_STOPS <> 'Child'
+/*SQL query code for number of average days an order is 
+billed after it is delivered
+in a 3 week period, rounded to two(2) decimal points
+by: sk-b! created: September 4, 2020*/
+
+SELECT 
+ROUND(AVG(date(odr.CHANGED) - date(tlo.ACTUAL_DELIVERY)), 2) 
+AS "DAYS TO BILL"
+FROM TLORDER tlo, ODRSTAT odr
+
+WHERE odr.ORDER_ID = tlo.DETAIL_LINE_ID
+
+AND tlo.CURRENT_STATUS = 'BILLD' AND odr.STATUS_CODE = 'BILLD'
+
+AND tlo.ACTUAL_DELIVERY <= current TIMESTAMP
+AND tlo.ACTUAL_DELIVERY >= current TIMESTAMP - 21 DAYS
+
+--end
+
+
